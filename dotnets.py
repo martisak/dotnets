@@ -7,35 +7,42 @@ layers_str = ["Input"] + ["Hidden"] * (len(layers) - 2) + ["Output"]
 layers_col = ["none"] + ["none"] * (len(layers) - 2) + ["none"]
 layers_fill = ["black"] + ["gray"] * (len(layers) - 2) + ["black"]
 
-print "digraph G {"
-print "fontname = \"Hilda 10\""
-print "rankdir=LR"
-print "splines=line"
-print "nodesep=.08;"
-print "ranksep=1;"
-print "edge [color=black, arrowsize=.5];"
-print "node [fixedsize=true,label=\"\",style=filled," + \
-    "color=none,fillcolor=gray,shape=circle]"
+penwidth = 15
+font = "Hilda 10"
 
+print "digraph G {"
+print "\tfontname = \"{}\"".format(font)
+print "\trankdir=LR"
+print "\tsplines=line"
+print "\tnodesep=.08;"
+print "\tranksep=1;"
+print "\tedge [color=black, arrowsize=.5];"
+print "\tnode [fixedsize=true,label=\"\",style=filled," + \
+    "color=none,fillcolor=gray,shape=circle]\n"
+
+# Clusters
 for i in range(0, len(layers)):
-    print("subgraph cluster_{} {{".format(i))
-    print("color={};".format(layers_col[i]))
-    print("node [style=filled, color=white, penwidth=15,"
+    print("\tsubgraph cluster_{} {{".format(i))
+    print("\t\tcolor={};".format(layers_col[i]))
+    print("\t\tnode [style=filled, color=white, penwidth={},"
           "fillcolor={} shape=circle];".format(
+              penwidth,
               layers_fill[i]))
+
+    print("\t\t"),
 
     for a in range(layers[i]):
         print "l{}{} ".format(i + 1, a),
 
     print ";"
-    print("label = {};".format(layers_str[i]))
-    print("}")
+    print("\t\tlabel = {};".format(layers_str[i]))
 
+    print("\t}\n")
 
 # Nodes
 for i in range(1, len(layers)):
     for a in range(layers[i - 1]):
         for b in range(layers[i]):
-            print "l{}{} -> l{}{}".format(i, a, i + 1, b)
+            print "\tl{}{} -> l{}{}".format(i, a, i + 1, b)
 
 print "}"
